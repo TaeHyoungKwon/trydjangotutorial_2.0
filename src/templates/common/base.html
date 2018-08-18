@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      My Django Tutorial
+    </title>
+  </head>
+
+  <body>
+
+    {% include './navbar.html' %}
+
+    {% block content %}
+      {/* 요 안에 각기 다른 특정 코드들이 들어가게 된다.
+      이외의 코드들은 모두 공통적으로 해당되는 코드들 */} 
+    {% endblock %} 
+  </body>
+</html>
