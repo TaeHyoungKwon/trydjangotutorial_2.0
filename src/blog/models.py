@@ -6,8 +6,8 @@ class Article(models.Model):
     content = models.TextField()
     active = models.BooleanField(default=True)
 
-    # def get_absolute_url(self):
-    #     return reverse('blog:article_detail',kwargs={"my_id": self.id})
+    def get_absolute_url(self):
+        return reverse('articles:article-detail',kwargs={"my_id": self.id})
 
     def __str__(self):
         return self.title
