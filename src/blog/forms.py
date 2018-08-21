@@ -3,7 +3,8 @@ from .models import Article
 
 class ArticleModelForm(forms.ModelForm):
     class Meta:
-        model = Articlefields = [
+        model = Article
+        fields = [
             'title',
             'content',
             'active'
