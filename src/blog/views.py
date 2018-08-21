@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 
@@ -7,7 +8,7 @@ from .models import Article
 
 
 class ArticleCreateView(CreateView):
-    template_name = 'articles/article_create.html'
+    template_name = 'blog/article_create.html'
     form_class = ArticleModelForm
 
     def form_valid(self, form):
@@ -18,13 +19,13 @@ class ArticleCreateView(CreateView):
 
 
 class ArticleListView(ListView):
-    template_name = 'articles/article_list.html'
+    template_name = 'blog/article_list.html'
     queryset = Article.objects.all()
 
 
 
 class ArticleDetailView(DetailView):
-    template_name = 'articles/article_detail.html'
+    template_name = 'blog/article_detail.html'
 
     def get_object(self):
         id_ = self.kwargs.get("my_id")
@@ -33,7 +34,7 @@ class ArticleDetailView(DetailView):
 
 
 class ArticleUpdateView(UpdateView):
-    template_name = 'articles/article_create.html'
+    template_name = 'blog/article_create.html'
     form_class = ArticleModelForm
 
     def get_object(self):
@@ -43,3 +44,12 @@ class ArticleUpdateView(UpdateView):
     def form_valid(self, form):
         print(form.cleaned_data)
         return super().form_valid(form)
+
+
+class ArticleDeleteView(DeleteView):
+    template_name = 'blog/article_delete.html'
+    success_url = "/blog"
+    def get_object(self):
+        id_ = self.kwargs.get("my_id")
+        return get_object_or_404(Article, id=id_)
+    
