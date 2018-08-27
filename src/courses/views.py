@@ -5,6 +5,20 @@ from .forms import CourseModelForm
 from .models import Course
 
 
+class CourseObjectMixin(object):
+    model = Course
+
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+
+        return obj
+
+    
+
+
 class CourseCreateView(View):
     template_name = "courses/course_create.html"
 
@@ -26,17 +40,9 @@ class CourseCreateView(View):
         return render(request, self.template_name, context)
 
 
-class CourseDeleteView(View):
+class CourseDeleteView(CourseObjectMixin, View):
     template_name = "courses/course_delete.html"
 
-    def get_object(self):
-        id = self.kwargs.get('id')
-        obj = None
-        if id is not None:
-            obj = get_object_or_404(Course, id=id)
-
-        return obj
-    
     def get(self, request, id=None, *args, **kwargs):
         context = {}
         obj = self.get_object()
@@ -55,16 +61,11 @@ class CourseDeleteView(View):
         return render(request, self.template_name, context)
 
     
-class CourseView(View):
+class CourseView(CourseObjectMixin, View):
     template_name = "courses/course_detail.html"
 
     def get(self, request, id=None, *args, **kwargs):
-        context = {}
-
-        if id is not None:
-            obj = get_object_or_404(Course, id=id)
-            context['object'] = obj
-
+        context = {'object': self.get_object()}
         return render(request, self.template_name, context)
 
 
@@ -82,18 +83,8 @@ class CourseListView(View):
         return render(request, self.template_name, context)
 
 
-class CourseUpdateView(View):
+class CourseUpdateView(CourseObjectMixin, View):
     template_name = "courses/course_update.html"
-
-    def get_object(self):
-        '''
-        url로 넘어오는 id 값을 return 한다.
-        '''
-        id = self.kwargs.get('id')
-        obj = None
-        if id is not None:
-            obj = get_object_or_404(Course, id=id)
-        return obj
 
     def get(self, request, id=None, *args, **kwargs):
         '''
