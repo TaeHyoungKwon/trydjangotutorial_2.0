@@ -48,8 +48,12 @@ class ArticleUpdateView(UpdateView):
 
 class ArticleDeleteView(DeleteView):
     template_name = 'blog/article_delete.html'
-    success_url = "/blog"
+    #success_url = "/blog"
+
     def get_object(self):
         id_ = self.kwargs.get("my_id")
         return get_object_or_404(Article, id=id_)
+
+    def get_success_url(self):
+        return reverse('articles:article-list')
     
